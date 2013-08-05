@@ -1,0 +1,72 @@
+/*! Style sheet for Directory Services Dashboard
+ *
+ */
+
+body {
+	padding: 0%;
+}
+
+header,#content,footer {
+	padding: 0 3%;
+}
+
+#logo {
+	width: 32px;
+	max-width: 75px;
+	float: left;
+	margin: 0 1% 0 -2%;
+}
+
+header {
+	background-color: #b70101;
+	background-image: -ms-linear-gradient(top, #b70101, #740001);
+	background-image: -webkit-linear-gradient(top, #b70101, #740001);
+	background-image: -o-linear-gradient(top, #b70101, #740001);
+	background-image: -moz-linear-gradient(top, #b70101, #740001);
+	background-image: linear-gradient(top, #b70101, #740001);
+	background-repeat: repeat-x;
+	color: #fff;
+	border-bottom: 4px solid #C1B49A;
+	min-height: 36px;
+}
+
+header #siteTitle {
+	font-family: Georgia, helvetica, sans-serif;
+	font-size: 1.3em;
+	line-height: 1.2;
+	font-weight: normal;
+	padding-top: .5em;
+	float: left;
+	width: 90%;
+	max-width: 275px;
+}
+
+header #siteTitle a {
+	color: #fff;
+}
+
+header #siteTitle a:hover {
+	color: #fff;
+}
+
+h1 {
+	white-space: nowrap;
+}
+
+td.status_icon {
+	white-space: nowrap;
+}
+
+td.environment {
+	width: 35%;
+}
+
+td.environment_status {
+	width: 65%;
+}
+
+td.last_updated {
+	white-space: nowrap !important;
+	text-align: right;
+	min-width: 95px;
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width">
+<title>{% block title %}Middleware Dashboard{% endblock title %}</title>
+<link href="{{ STATIC_URL}}css/bootstrap.min.css" rel="stylesheet">
+<link href="{{ STATIC_URL}}css/style.css" rel="stylesheet">
+{% block head %}{% endblock head %}
+</head>
+<body>
+{% block body %}
+<header>
+    <div id="logo">
+        <a href="http://www.wisc.edu/"><img src="{{ STATIC_URL }}img/uwcrest.png" alt="Link to UW home page"></a>
+    </div>
+    <div id="siteTitle">
+        <a href="http://www.wisc.edu/"><img src="{{ STATIC_URL }}img/b_uw.png" alt="University of Wisconsin-Madison"></a>
+    </div>
+</header>
+<div id="content">
+    <div class="page-header hidden-phone">
+        <h1>Middleware Dashboard</h1>
+    </div>
+    {% for group in service_groups %} 
+    <table class="table table-condensed table-hover">
+        <thead>
+            <tr>
+                <th colspan="3">{{ group.name }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+        <tr id="dir_replcheck_prod"></tr>
+        <tr id="dir_replcheck_test"></tr>
+        </tbody>    
+    </table>
+    {% endfor %}
+</div>
+{% endblock body %}
+</body>
+<script type="text/javascript" src="{{ STATIC_URL }}js/html5.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/dashboard.js"></script>
+{% block scripts %}
+{% endblock scripts %}
+
+</html>

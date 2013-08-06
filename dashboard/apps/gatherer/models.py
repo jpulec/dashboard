@@ -33,4 +33,4 @@ class ServiceStatus(models.Model):
     service_group = models.ForeignKey('ServiceGroup')
 
     def __unicode__(self):
-        return self.display_name + ":" + status
+        return self.display_name + ":" + self.status

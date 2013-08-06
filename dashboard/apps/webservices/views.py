@@ -1,5 +1,5 @@
-# Create your views here.
-from django.views.generic.list import ListView
+from django.views.generic.base import View
+from django.views.generic.list import MultipleObjectsMixin
 from dashboard.apps.gatherer.models import ServiceStatus, ServiceGroup, Environment
 from dashboard.apps.gatherer.tests.test import service_tests
 from dashboard.apps.gatherer.util import HTTPSClientCertTransport
@@ -8,16 +8,12 @@ import suds
 from suds.client import Client
 from urlparse import urlparse
 
-
-class Home(ListView):
-
-    template_name = "base.html"
+class WebServices(View, MultipleObjectsMixin):
     model = ServiceStatus
+    allow_empty = True
+    context_object_name = "webservices_list"
 
-    def post(self, *args, **kwargs):
-        pass
-
-    def get_queryset(self):
+    def get_queryset():
         for test in service_tests:
             obj, created = ServiceStatus.objects.get_or_create(display_name=test["name"],
                     defaults = {

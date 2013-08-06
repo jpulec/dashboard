@@ -102,6 +102,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'south',
     'dashboard.apps.gatherer',
+    'mptt',
     )
 
 AUTHENTICATION_BACKENDS = (

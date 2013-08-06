@@ -1,5 +1,6 @@
 from django.views.generic.base import View
-from django.views.generic.list import MultipleObjectsMixin
+from django.views.generic.list import MultipleObjectMixin
+from django.http import HttpResponse
 from dashboard.apps.gatherer.models import ServiceStatus, ServiceGroup, Environment
 from dashboard.apps.gatherer.tests.test import service_tests
 from dashboard.apps.gatherer.util import HTTPSClientCertTransport
@@ -8,21 +9,26 @@ import suds
 from suds.client import Client
 from urlparse import urlparse
 
-class WebServices(View, MultipleObjectsMixin):
+class WebServices(MultipleObjectMixin, View):
     model = ServiceStatus
     allow_empty = True
     context_object_name = "webservices_list"
 
-    def get_queryset():
+    def get(self, request, *args, **kwargs):
+        self.queryset = self.get_queryset()
+        print self.queryset
+        return HttpResponse(self.queryset)
+
+    def get_queryset(self):
+        queryset = None
         for test in service_tests:
             obj, created = ServiceStatus.objects.get_or_create(display_name=test["name"],
                     defaults = {
                         'dttm': datetime.datetime.now(),
                         'status': 'ok',
                         'status_description': "",
-                        'service_group': ServiceGroup.objects.get_or_create(name="Web Services",
-                                                                            environment = Environment.objects.get_or_create(name="Test")[0]
-                            )[0]
+                        'environment': Environment.objects.get_or_create(name="Test", 
+                           service_group =ServiceGroup.objects.get_or_create(name="Web Services")[0])[0]
                         }
                     )
             service_dicts = []
@@ -41,7 +47,7 @@ class WebServices(View, MultipleObjectsMixin):
                         transport=t)
                 except Exception as e:
                     logging.exception(e)
-                    return list()
+            #        return list()
             #elif test['security'] == "ws-security":
             #    security = Security()
             #    token = UsernameToken(
@@ -68,6 +74,11 @@ class WebServices(View, MultipleObjectsMixin):
             else:
                 obj.status = "ok"
             obj.save()
+        queryset = list()
+        group = ServiceGroup.objects.filter(name="Web Services")
+        for env in Environment.objects.filter(service_group=group):
+            for status in ServiceStatus.objects.filter(environment=env):
+                queryset.append(status)
         return queryset
 
     def get_status(self, value):

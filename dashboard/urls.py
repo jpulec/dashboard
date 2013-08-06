@@ -5,7 +5,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 from dashboard.apps.gatherer.views import Home
-from dashboard.apps.webservices import WebServices
+from dashboard.apps.webservices.views import WebServices
 
 urlpatterns = patterns('',
     # Examples:

@@ -4,16 +4,13 @@ from django.db import models
 
 class ServiceGroup(models.Model):
     name = models.CharField(max_length=256)
-    environment = models.ForeignKey('Environment')
 
     def __unicode__(self):
-        return self.name + ":" + self.environment.name
-
-    class Meta:
-        unique_together = ("name", "environment",)
+        return self.name
 
 class Environment(models.Model):
     name = models.CharField(max_length=4)
+    service_group = models.ForeignKey('ServiceGroup')
 
     def __unicode__(self):
         return self.name
@@ -30,7 +27,7 @@ class ServiceStatus(models.Model):
     dttm = models.DateTimeField()
     status = models.CharField(max_length=5, choices=STATUS_CHOICES)
     status_description = models.TextField()
-    service_group = models.ForeignKey('ServiceGroup')
+    environment = models.ForeignKey('Environment')
 
     def __unicode__(self):
         return self.display_name + ":" + self.status

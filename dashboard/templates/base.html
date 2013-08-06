@@ -21,20 +21,39 @@
     <div class="page-header hidden-phone">
         <h1>Middleware Dashboard</h1>
     </div>
-    {% for group in service_groups %} 
     <table class="table table-condensed table-hover">
-        <thead>
-            <tr>
-                <th colspan="3">{{ group.name }}</th>
-            </tr>
-        </thead>
-        <tbody>
-        
-        <tr id="dir_replcheck_prod"></tr>
-        <tr id="dir_replcheck_test"></tr>
-        </tbody>    
+        {% for name, group in object_list.items %}
+            <thead>
+                <tr>
+                    <th colspan="3">{{ name }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for env_name, env in group.items %}
+                <tr id="{{ name }}_{{ env_name }}">
+                    <td class="environment">{{ env_name }}
+                        <br/>
+                        <span class="visible-phone"><small>{{ env_name }}-LASTUPDATED</small>
+                        </span>
+                    </td>
+                    <td class="environment_status">
+                    {% for status in env %}
+                        {% if status.status != "ok" %}
+                            <span title={{ status.status_description }}>{{ status.status }}</span>
+                            <br />
+                            {% else %}
+                            <span title={{ status.status_description }}>No issues detected.</span>
+                            <br />
+                            {% endif %}
+                    {% endfor %}
+                    </td>
+                    <td class="last_updated hidden-phone"><small>{{ env_name }}-LASTUPDATED</small>
+                    </td>    
+                </tr>
+            {% endfor %}
+            </tbody>    
+        {% endfor %}
     </table>
-    {% endfor %}
 </div>
 {% endblock body %}
 </body>
@@ -42,7 +61,18 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/dashboard.js"></script>
+
 {% block scripts %}
+<script type="text/javascript">
+$.ajax({
+        url: "webservices/",
+        type: "GET",
+        success: function(data){
+            $("tr#Web Services_Test").html(data);
+            console.log(data);
+            }
+        });
+</script>
 {% endblock scripts %}
 
 </html>

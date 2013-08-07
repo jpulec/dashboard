@@ -1,5 +1,7 @@
 # Django settings for dashboard project.
 import os
+import djcelery
+djcelery.setup_loader()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
@@ -102,7 +104,8 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'south',
     'dashboard.apps.gatherer',
-    'mptt',
+    'dashboard.apps.webservices',
+    'djcelery',
     )
 
 AUTHENTICATION_BACKENDS = (

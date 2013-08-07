@@ -8,6 +8,7 @@ import suds
 from suds.client import Client
 from urlparse import urlparse
 
+SERVICE_TEMPLATES = ["webservices_shim.html"]
 
 class Home(ListView):
 
@@ -16,6 +17,10 @@ class Home(ListView):
 
     def post(self, *args, **kwargs):
         pass
+
+    def get_context_data(self, **kwargs):
+        context = super(Home, self).get_context_data(**kwargs)
+        context['service_templates'] = SERVICE_TEMPLATES
 
     def get_queryset(self):
         queryset = dict()

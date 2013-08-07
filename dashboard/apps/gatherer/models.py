@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 # Create your models here.
 
@@ -11,6 +12,7 @@ class ServiceGroup(models.Model):
 class Environment(models.Model):
     name = models.CharField(max_length=4)
     service_group = models.ForeignKey('ServiceGroup')
+    last_updated = models.DateTimeField(default=datetime.datetime.now())
 
     def __unicode__(self):
         return self.name

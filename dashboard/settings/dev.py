@@ -18,3 +18,7 @@ MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware','django
 INSTALLED_APPS += ('debug_toolbar','django_pdb')
 
 TEMPLATE_CONTEXT_PROCESSORS += ( 'django.core.context_processors.debug',)
+
+BROKER_URL = 'redis://localhost:6379/0'
+
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'

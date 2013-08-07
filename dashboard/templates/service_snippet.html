@@ -1,0 +1,31 @@
+<thead>
+    <tr>
+        <th colspan="3">{{ service.name }}</th>
+    </tr>
+</thead>
+<tbody>
+{% for env in envs %}
+    <tr id="{{ name }}_{{ env_name }}">
+        <td class="environment">{{ env.name }}
+            <br/>
+            <span class="visible-phone"><small>{{ env.last_updated|timesince }}</small>
+            </span>
+        </td>
+        <td class="environment_status">
+            {% for status in object_list %}
+                {% if status.environment == env %}
+                    {% if status.status != "ok" %}
+                        <span title={{ status.status_description }}>{{ status.status }}</span>
+                        <br />
+                    {% else %}
+                        <span title={{ status.status_description }}><img src="{{ STATIC_URL }}img/ok.png" height="16" width="16"/> No issues detected.</span>
+                        <br />
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </td>
+        <td class="last_updated hidden-phone"><small>{{ env.last_updated|timesince }}</small>
+        </td>    
+    </tr>
+{% endfor %}
+</tbody>    

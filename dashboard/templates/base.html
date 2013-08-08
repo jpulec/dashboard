@@ -23,8 +23,6 @@
     </div>
     <table id="status_table" class="table table-condensed table-hover">
         {% for template in service_templates %}
-            
-            {{ template }}
             {% include template %}
         {% endfor %}
     </table>
@@ -38,11 +36,11 @@
 
 {% block scripts %}
 <script type="text/javascript">
-$(document).ready(function(e) {
+$(window).load(function(e) {
     updateDashboard();
-    setInterval(function() {
-        updateDashboard();
-    }, 15000);
+    //setInterval(function() {
+    //    updateDashboard();
+    //}, 15000);
 
 });
 

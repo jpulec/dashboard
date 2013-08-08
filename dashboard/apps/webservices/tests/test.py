@@ -20,9 +20,10 @@ service_tests = [
         "security": "ssl",
         "port": "ApplicationServicePort",
         "operations": {
-            "ping": "",
+            "ping": ("validate_regex", "ping_regex"),
         }
-    },
+    }]
+testers=[
     {
         "access": "RPC",
         "name": "AuthZ",

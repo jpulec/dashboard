@@ -3,11 +3,11 @@ from django.views.generic.list import MultipleObjectMixin, MultipleObjectTemplat
 from django.http import HttpResponse
 from dashboard.apps.gatherer.models import ServiceStatus, ServiceGroup, Environment
 from dashboard.apps.webservices.tests.test import service_tests
-from dashboard.apps.webservices.tests.common import validate_regex
+import dashboard.apps.webservices.tests.common as test_module
 from dashboard.apps.gatherer.util import HTTPSClientCertTransport
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from dashboard.apps.webservices.tasks import call_webservice
+from dashboard.apps.webservices.tasks import call_webservice, validate_webservice
 import datetime, logging
 import suds
 import django_rq
@@ -20,8 +20,7 @@ logger = logging.getLogger(__name__)
 class WebServices(MultipleObjectMixin, TemplateView):
     model = ServiceStatus
     allow_empty = True
-    template_name = "webservice_shim.html"
-    context_object_name = "webservices_list"
+    template_name = "service_snippet.html"
 
     def get(self, request , *args, **kwargs):
         return super(WebServices, self).get(request, *args, object_list=self.get_queryset(), **kwargs)
@@ -35,12 +34,8 @@ class WebServices(MultipleObjectMixin, TemplateView):
     def get_queryset(self):
         jobs = []
         for test in service_tests:
-            jobs.append(call_webservice.delay(test))
-        while not django_rq.get_queue().is_empty():
-            #Twiddle your fucking thumbs
-            pass
-        for job in jobs:
-            self.validate(job)
+            job = call_webservice.delay(test)
+            validate_webservice.delay(test, job.get_id())
         queryset = list()
         group = ServiceGroup.objects.filter(name="Web Services")
         for env in Environment.objects.filter(service_group=group):
@@ -49,9 +44,7 @@ class WebServices(MultipleObjectMixin, TemplateView):
             for status in ServiceStatus.objects.filter(environment=env):
                 queryset.append(status)
         return queryset
-    
-    def validate(self, job_result):
-        
+
 
     def get_status(self, value):
         if value == 200:

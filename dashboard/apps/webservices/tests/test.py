@@ -20,7 +20,7 @@ service_tests = [
         "security": "ssl",
         "port": "ApplicationServicePort",
         "operations": {
-            "ping": validate_regex(ping_regex),
+            "ping": "",
         }
     },
     {
@@ -30,7 +30,7 @@ service_tests = [
         "security": "ssl",
         "port": "AuthZServicePort",
         "operations": {
-            "ping": validate_regex(ping_regex),
+            "ping": "",
         }
     },
     {
@@ -40,7 +40,7 @@ service_tests = [
         "security": "ssl",
         "port": "CalendarServicePort",
         "operations": {
-            "ping": validate_regex(ping_regex),
+            "ping": "",
         }
     },
     {
@@ -50,7 +50,7 @@ service_tests = [
         "security": "ssl",
         "port": "CMSServicePort",
         "operations": {
-            "ping": validate_regex(ping_regex),
+            "ping": "",
         }
     },
     {
@@ -60,7 +60,7 @@ service_tests = [
         "security": "ssl",
         "port": "GroupsServicePort",
         "operations": {
-            "ping": validate_regex(ping_regex),
+            "ping": "",
         }
     },
     {
@@ -70,7 +70,7 @@ service_tests = [
         "security": "ssl",
         "port": "FPMAccountServicePort",
         "operations": {
-            "ping": validate_regex(ping_regex),
+            "ping": "",
         }
     },
     {
@@ -80,7 +80,7 @@ service_tests = [
         "security": "ssl",
         "port": "HDToolsServicePort",
         "operations": {
-            "ping": validate_regex(ping_regex),
+            "ping": "",
         }
     },
     {
@@ -90,7 +90,7 @@ service_tests = [
         "security": "ssl",
         "port": "IMSServicePort",
         "operations": {
-            "ping": validate_regex(ping_regex),
+            "ping": "",
         }
     },
     {
@@ -100,7 +100,7 @@ service_tests = [
         "security": "ssl",
         "port": "KerberosServicePort",
         "operations": {
-            "ping": validate_regex(ping_regex),
+            "ping": "",
         }
     },
     {
@@ -110,7 +110,7 @@ service_tests = [
         "security": "ssl",
         "port": "MailServicePort",
         "operations": {
-            "ping": validate_regex(ping_regex),
+            "ping": "",
         }
     },
     {
@@ -120,7 +120,7 @@ service_tests = [
         "security": "ssl",
         "port": "NetIDServicePort",
         "operations": {
-            "ping": validate_regex(ping_regex),
+            "ping": "",
         }
     },
     {
@@ -130,7 +130,7 @@ service_tests = [
         "security": "ssl",
         "port": "ServiceAccountServicePort",
         "operations": {
-            "ping": validate_regex(ping_regex),
+            "ping": "",
         }
     },
     {
@@ -140,7 +140,7 @@ service_tests = [
         "security": "ssl",
         "port": "ServicesServicePort",
         "operations": {
-            "ping": validate_regex(ping_regex),
+            "ping": "",
         }
     },
     {
@@ -150,7 +150,7 @@ service_tests = [
         "security": "ssl",
         "port": "TemplateServicePort",
         "operations": {
-            "ping": validate_regex(ping_regex),
+            "ping": "",
         }
     },
     {
@@ -160,7 +160,7 @@ service_tests = [
         "security": "ssl",
         "port": "TestServicePort",
         "operations": {
-            "ping": validate_regex(ping_regex),
+            "ping": "",
         }
     },
     {
@@ -170,7 +170,7 @@ service_tests = [
         "security": "ssl",
         "port": "UDSServicePort",
         "operations": {
-            "ping": validate_regex(ping_regex),
+            "ping": "",
         }
     },
     {
@@ -180,7 +180,7 @@ service_tests = [
         "security": "ssl",
         "port": "UDSAdminServicePort",
         "operations": {
-            "ping": validate_regex(ping_regex),
+            "ping": "",
         }
     },
     {
@@ -190,7 +190,7 @@ service_tests = [
         "security": "ssl",
         "port": "UDSPersonServicePort",
         "operations": {
-            "ping": validate_regex(ping_regex),
+            "ping": "",
         }
     },
     {
@@ -200,7 +200,7 @@ service_tests = [
         "security": "ssl",
         "port": "WebISOServicePort",
         "operations": {
-            "ping": validate_regex(ping_regex),
+            "ping": "",
         }
     },
     {
@@ -211,7 +211,7 @@ service_tests = [
         "security": "ws-security",
         "port": "chubSoap11",
         "operations": {
-            "GetCurrentTerms": validate_dict(term_dict)
+            "GetCurrentTerms": ""
         }
     },
     {
@@ -222,7 +222,7 @@ service_tests = [
         "security": "ws-security",
         "port": "chubSoap11",
         "operations": {
-            "GetCurrentTerms": validate_dict(term_dict)
+            "GetCurrentTerms": ""
         }
     },
     {
@@ -233,7 +233,7 @@ service_tests = [
         "security": "ws-security",
         "port": "chubSoap11",
         "operations": {
-            "GetCurrentTerms": validate_dict(term_dict)
+            "GetCurrentTerms": ""
         }
     },
     {
@@ -244,7 +244,7 @@ service_tests = [
         "security": "ws-security",
         "port": "chubSoap11",
         "operations": {
-            "GetCurrentTerms": validate_dict(term_dict)
+            "GetCurrentTerms": ""
         }
     }
 ]

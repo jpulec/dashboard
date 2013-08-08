@@ -14,3 +14,7 @@ urlpatterns = patterns('',
     url(r'webservices/$', WebServices.as_view(), name="webservices"),
     url(r'^$', Home.as_view(), name="home"),
 )
+
+urlpatterns += patterns('',
+    (r'^django-rq/', include('django_rq.urls')),
+)

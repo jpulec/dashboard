@@ -5,14 +5,17 @@ from dashboard.apps.gatherer.models import ServiceStatus, ServiceGroup, Environm
 from dashboard.apps.webservices.tests.test import service_tests
 from dashboard.apps.webservices.tests.common import validate_regex
 from dashboard.apps.gatherer.util import HTTPSClientCertTransport
-from dashboard.apps.webservices.tasks import webservice_call
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from dashboard.apps.webservices.tasks import call_webservice
 import datetime, logging
 import suds
+import django_rq
 import threading
 from suds.client import Client
 from urlparse import urlparse
+
+logger = logging.getLogger(__name__)
 
 class WebServices(MultipleObjectMixin, TemplateView):
     model = ServiceStatus
@@ -30,9 +33,14 @@ class WebServices(MultipleObjectMixin, TemplateView):
         return context
 
     def get_queryset(self):
-        queryset = None
+        jobs = []
         for test in service_tests:
-            webservice_call.delay(test)
+            jobs.append(call_webservice.delay(test))
+        while not django_rq.get_queue().is_empty():
+            #Twiddle your fucking thumbs
+            pass
+        for job in jobs:
+            self.validate(job)
         queryset = list()
         group = ServiceGroup.objects.filter(name="Web Services")
         for env in Environment.objects.filter(service_group=group):
@@ -41,6 +49,9 @@ class WebServices(MultipleObjectMixin, TemplateView):
             for status in ServiceStatus.objects.filter(environment=env):
                 queryset.append(status)
         return queryset
+    
+    def validate(self, job_result):
+        
 
     def get_status(self, value):
         if value == 200:

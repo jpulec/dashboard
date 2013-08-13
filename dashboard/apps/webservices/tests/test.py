@@ -5,6 +5,10 @@ from common import *
 #    format='%(asctime)s %(message)s',
 #    filename=LOG_FILE,
 #    level=logging.INFO)
+import logging 
+
+logger = logging.getLogger(__name__)
+
 
 server_tests = [
     {
@@ -22,8 +26,7 @@ service_tests = [
         "operations": {
             "ping": ("validate_regex", "ping_regex"),
         }
-    }]
-testers=[
+    },
     {
         "access": "RPC",
         "name": "AuthZ",

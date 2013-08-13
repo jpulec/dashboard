@@ -3,6 +3,7 @@ from django.views.generic.list import MultipleObjectMixin, MultipleObjectTemplat
 from django.http import HttpResponse
 from dashboard.apps.gatherer.models import ServiceStatus, ServiceGroup, Environment
 from dashboard.apps.webservices.tests.test import service_tests
+from dashboard.apps.webservices.models import WebServiceTest, WebServiceOperation
 import dashboard.apps.webservices.tests.common as test_module
 from dashboard.apps.gatherer.util import HTTPSClientCertTransport
 from django.shortcuts import render_to_response
@@ -33,9 +34,12 @@ class WebServices(MultipleObjectMixin, TemplateView):
 
     def get_queryset(self):
         jobs = []
-        for test in service_tests:
-            job = call_webservice.delay(test)
-            validate_webservice.delay(test, job.get_id())
+        service_tests = WebServiceTest.objects.all()
+        for service_test in service_tests:
+            operations = WebServiceOperation.objects.filter(service=service_test)
+            client = service_test.setup()
+            for operation in operations:
+                job  = django_rq.enqueue(operation.execute)
         queryset = list()
         group = ServiceGroup.objects.filter(name="Web Services")
         for env in Environment.objects.filter(service_group=group):

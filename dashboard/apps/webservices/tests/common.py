@@ -16,6 +16,8 @@ def negate(func):
         return True
     return neg_func
 
+def validate_ssh(response):
+    return response.succeeded
 
 def validate_lines(*args):
     def validator(value):

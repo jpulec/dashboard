@@ -101,6 +101,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'south',
+    'dashboard.apps',
     'dashboard.apps.gatherer',
     'dashboard.apps.webservices',
     'django_rq',

@@ -33,6 +33,10 @@ RQ_QUEUES = {
         'HOST': 'localhost',
         'PORT': 6379,
         'DB': 0,
-    }
+    },
+    'webservices': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+    },
 }
-        

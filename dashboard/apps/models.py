@@ -59,6 +59,7 @@ class ServiceCommand(models.Model):
     cmd = models.CharField(max_length=256)
     validate_func_str = models.CharField(max_length=256)
     failed_validation = models.TextField()
+    execution_number = models.IntegerField()
 
     class Meta:
         abstract = True
@@ -69,6 +70,9 @@ class ServiceCommand(models.Model):
     def validate(self, result):
         raise NotImplementedError
 
+    def __unicode__(self):
+        return self.cmd + " to be performed as step " + str(self.execution_number)
+
 class SSHCommand(ServiceCommand):
     sudo = models.BooleanField()
 
@@ -76,9 +80,12 @@ class SSHCommand(ServiceCommand):
         abstract = True
 
     def validate(self, result):
-        return SSHPipe(result)
+        try:
+            return SSHResult.objects.get(container=self, result=result).response
+        except Exception as e:
+            pass
 
-    def execute(self, pipe):
+    def execute(self, pipe=None):
         with settings(hide('everything', 'status', 'stdout', 'stderr', 'commands'), warn_only=True, host_string=self.test.host, user=self.test.username, password=self.test.password):
             try:
                 out = None
@@ -91,9 +98,14 @@ class SSHCommand(ServiceCommand):
         return self.validate(out)
 
     def __unicode__(self):
-        return self.cmd + " as part of " + str(self.test)
+        return super(SSHCommand, self).__unicode__() + " as part of " + str(self.test)
 
-class SSHPipe(object):
-    def __init__(self, result, quit=False):
-        self.quit = quit
-        self.result = result
+class SSHResult(models.Model):
+    result = models.CharField(max_length=256, db_index=True)
+    response = models.CharField(max_length=256, db_index=True)
+
+    class Meta:
+        abstract = True
+
+    def __unicode__(self):
+        return self.result + " should respond with " + self.response

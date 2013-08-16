@@ -30,7 +30,7 @@ class WebServices(MultipleObjectMixin, TemplateView):
                 q.enqueue(command.execute)
         ssh_tests = WebServiceSSHTest.objects.all()
         for ssh_test in ssh_tests:
-            commands = WebServiceSSHCommand.objects.filter(test=ssh_test)
+            commands = [command for command in sorted(WebServiceSSHCommand.objects.filter(test=ssh_test), cmp=lambda x,y: cmp(x.execution_number, y.execution_number))]
             q.enqueue(sync_ssh, commands)
         while not q.is_empty():
             continue
@@ -44,8 +44,8 @@ class WebServices(MultipleObjectMixin, TemplateView):
         return queryset
 
 def sync_ssh(commands):
+    next_num = 1
     for command in commands:
-        pipe = command.execute()
-        if pipe.quit:
-            break
-        command.execute(pipe)
+        if command.execution_number != next_num:
+            continue
+        next_num = command.execute()

@@ -4,7 +4,7 @@ from suds.client import Client
 from urlparse import urlparse
 import suds
 from dashboard.apps.webservices.util import HTTPSClientCertTransport
-from dashboard.apps.models import SSHTest, SSHPipe, SSHCommand, ServiceCommand, ServiceTest
+from dashboard.apps.models import SSHTest, SSHResult, SSHCommand, ServiceCommand, ServiceTest
 from dashboard.apps.webservices.tests import common as test_module
 import os,sys
 import json
@@ -97,12 +97,15 @@ class WebServiceSSHCommand(SSHCommand):
             validate_func = getattr(test_module, self.validate_func_str)
         except AttributeError as e:
             logging.error(e)
-            return SSHPipe(result, True)
+            results = None
+            return None
         try:
-            if not validate_func(result):
-                logging.warning("Validation failed for %s - %s with value %s" % (self.test.name, self.validate_func_str, result))
-                return SSHPipe(result, True)
+            validated_result = validate_func(result)
+            response = WebServiceSSHResult.objects.get(container=self, result=validated_result)
+            return response
         except Exception as e:
             logging.error(e)
-            return SSHPipe(result, True)
-        return SSHPipe(result, False)
+        return None
+
+class WebServiceSSHResult(SSHResult):
+    container = models.ForeignKey('WebServiceSSHCommand', db_index=True)
